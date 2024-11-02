@@ -4,35 +4,45 @@ from Crypto.Util.number import inverse, long_to_bytes, bytes_to_long
 from gmpy2 import iroot
 from sympy import factorint
 
+
 def generate_rsa_keypair(e, bit_length):
     """Generate RSA keypair with the specified bit length and public exponent e."""
     key = RSA.generate(bit_length, e=e)
     return key.publickey(), key
 
+
 def encrypt_rsa(message, public_key):
     """Encrypt a message using RSA public key."""
     cipher = PKCS1_v1_5.new(public_key)
-    message_bytes = message.encode('utf-8')
+    message_bytes = message.encode("utf-8")
     ciphertext = cipher.encrypt(message_bytes)
     return bytes_to_long(ciphertext)
+
 
 def decrypt_rsa(ciphertext, private_key):
     """Decrypt a ciphertext using RSA private key."""
     cipher = PKCS1_v1_5.new(private_key)
     ciphertext_bytes = long_to_bytes(ciphertext)
     message_bytes = cipher.decrypt(ciphertext_bytes, None)
-    return message_bytes.decode('utf-8', errors='ignore').strip()
+    return message_bytes.decode("utf-8", errors="ignore").strip()
+
 
 def decrypt_rsa_manual(ciphertext, n, d):
     """Decrypt a ciphertext manually using the private key components (n, d)."""
     plaintext_int = pow(ciphertext, d, n)
     plaintext_bytes = long_to_bytes(plaintext_int)
-    return plaintext_bytes.decode('utf-8', errors='ignore').strip()
+    return plaintext_bytes.decode("utf-8", errors="ignore").strip()
+
 
 def strip_left_of_first_null_byte(plaintext_bytes):
     """Removes everything to the left of the first 0x00 byte in the plaintext bytes."""
-    null_byte_index = plaintext_bytes.find(b'\x00')
-    return plaintext_bytes[null_byte_index + 1:].decode('utf-8', errors='ignore') if null_byte_index != -1 else plaintext_bytes.decode('utf-8', errors='ignore')
+    null_byte_index = plaintext_bytes.find(b"\x00")
+    return (
+        plaintext_bytes[null_byte_index + 1 :].decode("utf-8", errors="ignore")
+        if null_byte_index != -1
+        else plaintext_bytes.decode("utf-8", errors="ignore")
+    )
+
 
 def manual_rsa_decrypt(ciphertext, d, n):
     """Decrypt ciphertext using RSA manually and strip non-UTF-8 sequences."""
@@ -40,12 +50,14 @@ def manual_rsa_decrypt(ciphertext, d, n):
     plaintext_bytes = long_to_bytes(plaintext_int)
     return strip_left_of_first_null_byte(plaintext_bytes)
 
+
 def break_rsa_small_m(c, e, n):
     """Attempt to decrypt a ciphertext by finding the e-th root directly."""
     m, exact = iroot(c, e)
     if exact:
-        return long_to_bytes(m).decode('utf-8', errors='ignore')
+        return long_to_bytes(m).decode("utf-8", errors="ignore")
     raise ValueError("Could not find the exact e-th root.")
+
 
 def find_small_factor_optimized(n, factor_bit_length):
     """Find small factors of n within the specified bit length."""
@@ -54,6 +66,7 @@ def find_small_factor_optimized(n, factor_bit_length):
         if p.bit_length() <= factor_bit_length:
             return p
     return None
+
 
 def break_rsa_small_factor(c, e, n, factor_bit_length):
     """Break RSA by finding small factors of n and manually decrypting the ciphertext."""
@@ -64,6 +77,7 @@ def break_rsa_small_factor(c, e, n, factor_bit_length):
     phi = (p - 1) * (q - 1)
     d = inverse(e, phi)
     return decrypt_rsa_manual(c, n, d)
+
 
 if __name__ == "__main__":
     # Task 1: Generate RSA keys

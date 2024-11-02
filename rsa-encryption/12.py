@@ -1,4 +1,3 @@
-
 from Crypto.Util.number import getPrime, inverse, bytes_to_long, long_to_bytes
 
 
@@ -25,7 +24,7 @@ def encrypt_message(public_key, message):
     e, n = public_key
 
     # Convert the message to a number using bytes_to_long
-    message_bytes = message.encode('utf-8')
+    message_bytes = message.encode("utf-8")
     message_long = bytes_to_long(message_bytes)
 
     # Encrypt the message
@@ -41,7 +40,7 @@ def decrypt_message(private_key, encrypted_message):
     decrypted_message_long = pow(encrypted_message, d, n)
 
     # Convert the number back to bytes, then decode to a string
-    decrypted_message = long_to_bytes(decrypted_message_long).decode('utf-8')
+    decrypted_message = long_to_bytes(decrypted_message_long).decode("utf-8")
 
     return decrypted_message
 
@@ -53,7 +52,7 @@ print(f"Private Key (d, n): {private_key}")
 print(f"p: {p}")
 print(f"q: {q}")
 
-message = "Igor Repkin"
+message = "Vardas Pavarde"
 encrypted_message = encrypt_message(public_key, message)
 print(f"Encrypted Message: {encrypted_message}")
 
