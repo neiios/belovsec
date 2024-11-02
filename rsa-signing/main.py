@@ -22,30 +22,28 @@ def create_signature(hash_value_hex: str, private_key: tuple[int, int]) -> str:
     message = int(hash_value_hex, 16)
     n, d = private_key
     signature = pow(message, d, n)
-    return hex(signature)[2:]
+    return f"{signature:x}"
 
 
 def main() -> None:
     filename = "certificate.txt"
     private_key = read_private_key_from_file("rsa_keys.txt", 7)
 
-    hash_value = hash_file(filename)
-    signature = create_signature(hash_value, private_key)
+    hash = hash_file(filename)
+    signature = create_signature(hash, private_key)
 
     timestamp = int(time.time())
-    timestamp_hex = hex(timestamp)[2:]
-
-    combined = hash_value + timestamp_hex
-    timestamp_hash = hashlib.sha256(combined.encode()).hexdigest()
-
-    timestamp_signature = create_signature(timestamp_hash, private_key)
+    timestamp_hex = f"{timestamp:x}"
+    combined = hash + timestamp_hex
+    combined_hash = hashlib.sha256(combined.encode()).hexdigest()
+    combined_signature = create_signature(combined_hash, private_key)
 
     with open("output.txt", "w") as f:
-        f.write(f"Sertifikato piršto antspaudas: {hash_value}\n")
+        f.write(f"Sertifikato piršto antspaudas: {hash}\n")
         f.write(f"Piršto antspaudo parašas: {signature}\n")
-        f.write(f"Sertifikato ir laiko žymos piršto antspaudas: {timestamp_hash}\n")
+        f.write(f"Sertifikato ir laiko žymos piršto antspaudas: {combined_hash}\n")
         f.write(f"Laiko žyma: {timestamp}\n")
-        f.write(f"Sertifikato ir laiko žymos piršto antspaudo parašas: {timestamp_signature}\n")
+        f.write(f"Sertifikato ir laiko žymos piršto antspaudo parašas: {combined_signature}\n")
 
     with open("output.txt", "r") as f:
         print(f.read())
