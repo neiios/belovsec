@@ -32,16 +32,21 @@ def main():
     p = params["p"]
     a = params["a"]
     b = params["b"]
+
     public_A, public_B, secret_A, secret_B = diffie_hellman(g, p, a, b)
+
     print("Public Parameters:")
     print(f"g (generator): {g}")
     print(f"p (prime): {p}")
+
     print("\nPrivate Keys:")
     print(f"a (Alice's private key): {a}")
     print(f"b (Bob's private key): {b}")
+
     print("\nPublic Keys:")
     print(f"A (Alice's public key): {public_A}")
     print(f"B (Bob's public key): {public_B}")
+
     print("\nShared Secrets:")
     print(f"Alice's shared secret: {secret_A}")
     print(f"Bob's shared secret: {secret_B}")
