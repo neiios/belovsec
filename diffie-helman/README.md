@@ -1,5 +1,5 @@
-Put your file in the directory then run the tasks.
-Second script sometimes generates prime numbers with less than 100 bits.
+Put your task file in the directory and then run the tasks.
+Third script sometimes generates prime numbers with less than 100 bits.
 Just run it again until it generates a 100 bit number.
 
 ```bash
