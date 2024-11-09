@@ -24,11 +24,13 @@ def create_signature(hash_value_hex: str, private_key: tuple[int, int]) -> int:
     signature = pow(message, d, n)
     return signature
 
+
 def verify_signature(hash_value_hex: str, signature: int, public_key: tuple[int, int]) -> bool:
     n, e = public_key
     decrypted_hash = pow(signature, e, n)
     calculated_hash = int(hash_value_hex, 16)
     return decrypted_hash == calculated_hash
+
 
 def main() -> None:
     filename = "certificate.txt"
