@@ -18,11 +18,11 @@ def hash_file(filename: str) -> str:
     return sha256_hash.hexdigest()
 
 
-def create_signature(hash_value_hex: str, private_key: tuple[int, int]) -> str:
+def create_signature(hash_value_hex: str, private_key: tuple[int, int]) -> int:
     message = int(hash_value_hex, 16)
     n, d = private_key
     signature = pow(message, d, n)
-    return f"{signature:x}"
+    return signature
 
 
 def main() -> None:
