@@ -43,7 +43,7 @@ def main() -> None:
     timestamp = int(time.time())
     timestamp_hex = f"{timestamp:x}"
     combined = hash + timestamp_hex
-    combined_hash = hashlib.sha256(combined.encode()).hexdigest()
+    combined_hash = hashlib.sha256(bytes.fromhex(combined)).hexdigest()
     combined_signature = create_signature(combined_hash, private_key)
 
     with open("output.txt", "w") as f:
