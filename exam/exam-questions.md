@@ -1,0 +1,8 @@
+- klasifikuoti AES algoritma
+- saugumo gresmiu lygiai, aes maisymo metodai
+- elgamalio ir vernano kriptosistemos
+- aes klasifikacijos ir vernamo sifro pros/cons
+- kaip kriptosistemos skirstomos pagal rakta
+- kas sudaro kriptosistema(kokie elementai)
+- kam reikalingi statistiniai testai
+- ar duotas rsa viesasis raktas yra validus (n fakrorizavimas)
